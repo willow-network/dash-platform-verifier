@@ -1,0 +1,5 @@
+target/
+contracts/dash-verifier/lib/
+contracts/dash-verifier/out/
+contracts/dash-verifier/cache/
+contracts/dash-verifier/broadcast/*/*/dry-run/

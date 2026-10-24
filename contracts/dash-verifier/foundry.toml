@@ -1,0 +1,13 @@
+# Dash Platform verifier (zkvm/dash) and the username escrow built on it.
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+fs_permissions = [{ access = "read", path = "../../zkvm/dash/fixtures" }]
+
+[rpc_endpoints]
+mainnet = "${RPC_MAINNET}"

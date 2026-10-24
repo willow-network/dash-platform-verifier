@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# prove-username <name> <start-core-height> [groth16|plonk]
+# Fresh proof that <name>.dash resolves to its identity, walked from a Core block the
+# DashPlatformVerifier already trusts (its bootstrap block or any CoreBlockTrusted).
+# Needs: the Python tools (.venv), dash-execrun, dash-prove and the guest ELF ($DASH_ELF).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+name="$1"; start="$2"; mode="${3:-groth16}"
+label=$(python3 -c "import sys; n=sys.argv[1].lower().removesuffix('.dash'); print(n.replace('o','0').replace('i','1').replace('l','1'))" "$name")
+dir=$(.venv/bin/python tools/save_fixture.py "$label" | tail -1)
+.venv/bin/python tools/export_platform.py "$dir" >/dev/null
+input=$(.venv/bin/python tools/build_input.py "$dir" "$start" | tail -1)
+"${DASH_EXECRUN:-dash-execrun}" "$input"
+"${DASH_PROVE:-dash-prove}" prove "$DASH_ELF" "$input.stdin.bin" "$input.public.bin" "$dir/proof.json" "$mode"
+echo "proof: $dir/proof.json"

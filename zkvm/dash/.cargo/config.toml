@@ -1,0 +1,5 @@
+# The guest links C (the vendored X11 code, secp256k1-sys through Dash's dpp). Build it with clang,
+# which the pinned SP1 mint image ships (Ubuntu clang 18.1.3), so the docker mint is reproducible.
+[env]
+CC_riscv64im_succinct_zkvm_elf = "clang"
+CFLAGS_riscv64im_succinct_zkvm_elf = "--target=riscv64-unknown-elf -march=rv64im -mabi=lp64 -mcmodel=medany"

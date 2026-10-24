@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  core:
+    name: verifier core (native)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: zkvm/dash
+      - name: tests, including every GroveDB proof byte
+        working-directory: zkvm/dash
+        run: cargo test --release --locked -p dash-lane-core -- --include-ignored --test-threads=2
+      - name: fmt
+        run: cargo fmt --manifest-path zkvm/dash/Cargo.toml --all -- --check
+
+  contracts:
+    name: contracts (forge)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Foundry, pinned
+        run: |
+          export FOUNDRY_DIR="$HOME/.foundry"
+          curl -sSfL https://foundry.paradigm.xyz | bash
+          "$FOUNDRY_DIR/bin/foundryup" --install v1.4.3
+          echo "$FOUNDRY_DIR/bin" >> "$GITHUB_PATH"
+      - name: forge-std
+        working-directory: contracts/dash-verifier
+        run: forge install foundry-rs/forge-std@v1.16.2 --no-git
+      - name: forge test (fork tests skip without an RPC)
+        working-directory: contracts/dash-verifier
+        run: forge test

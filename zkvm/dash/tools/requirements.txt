@@ -1,0 +1,8 @@
+base58==2.1.1
+cbor2==6.1.5
+ecdsa==0.19.2
+grpcio==1.84.1
+grpcio-tools==1.84.1
+protobuf==7.36.2
+py-ecc==8.0.0
+pycryptodome==4.1.0

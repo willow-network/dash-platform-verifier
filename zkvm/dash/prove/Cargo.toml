@@ -1,0 +1,21 @@
+[package]
+name = "dash-prove"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Prover host for the Dash username program: SP1 execute (cycles), Groth16/PLONK proofs and the
+# program vkey. Its own workspace so the guest workspace's patches never reach it.
+[workspace]
+
+[dependencies]
+sp1-sdk = { version = "=6.8.1", features = ["blocking"] }
+anyhow = "1"
+hex = "0.4"
+serde_json = "1"
+
+[features]
+cuda = ["sp1-sdk/cuda"]
+
+[profile.release]
+opt-level = 3

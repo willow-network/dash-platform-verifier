@@ -1,0 +1,8 @@
+[package]
+name = "dash-username-program"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sp1-zkvm = "=6.8.1"
+dash-lane-core = { path = "../core" }

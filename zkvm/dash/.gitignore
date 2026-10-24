@@ -1,0 +1,7 @@
+target
+.venv
+gen
+fixtures/core-blocks
+# per-run fixture dirs from tools/save_fixture.py
+fixtures/*/
+__pycache__

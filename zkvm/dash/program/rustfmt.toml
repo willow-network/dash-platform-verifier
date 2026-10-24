@@ -1,0 +1,2 @@
+# The mainnet vkey pins this source byte for byte; reformatting moves panic line numbers in the ELF.
+disable_all_formatting = true
